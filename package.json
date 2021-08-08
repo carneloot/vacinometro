@@ -1,0 +1,16 @@
+{
+    "name": "vacinometro",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/main.mjs",
+    "scripts": {
+        "start": "node src/main.mjs"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@sendgrid/mail": "^7.4.5",
+        "dotenv": "^10.0.0",
+        "puppeteer": "^10.2.0"
+    }
+}
