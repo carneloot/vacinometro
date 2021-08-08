@@ -2,9 +2,9 @@
     "name": "vacinometro",
     "version": "1.0.0",
     "description": "",
-    "main": "src/main.mjs",
+    "main": "src/main.js",
     "scripts": {
-        "start": "node src/main.mjs"
+        "start": "node src/main.js"
     },
     "author": "",
     "license": "ISC",
