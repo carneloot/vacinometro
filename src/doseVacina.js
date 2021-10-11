@@ -33,30 +33,34 @@ exports.doseVacina = async (event, context) => {
 
     if (saiuDatas) {
         console.log('Encontrei datas!', dataPrimeiraDose, dataSegundaDose);
-        const { default: sendgrid } = await import('@sendgrid/mail');
 
-        sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+        const { SENDGRID_API_KEY, EMAIL } = process.env;
 
-        const email = process.env.EMAIL;
+        if (SENDGRID_API_KEY && EMAIL) {
+            const { default: sendgrid } = await import('@sendgrid/mail');
+    
+            sendgrid.setApiKey(SENDGRID_API_KEY);
+;
+            const screenshot = await page.screenshot({ fullPage: true });
 
-        const screenshot = await page.screenshot({ fullPage: true });
+            await sendgridsend({
+                to: EMAIL,
+                from: EMAIL,
+                subject: '[URGENTE] Dose Vacina',
+                html: `<h2>Saiu dose da vacina!!!</h2>
+                <br>1ª Dose:<strong>${dataPrimeiraDose}</strong>
+                <br>2ª Dose:<strong>${dataSegundaDose}</strong>
+                <br><img src="cid:print"/>
+                `,
+                attachments: [{
+                    content: screenshot.toString('base64'),
+                    type: 'image/png',
+                    contentId: 'print',
+                    filename: 'print.png'
+                }],
+            });
+        }
 
-        await sendgrid.send({
-            to: email,
-            from: email,
-            subject: '[URGENTE] Dose Vacina',
-            html: `<h2>Saiu dose da vacina!!!</h2>
-            <br>1ª Dose:<strong>${dataPrimeiraDose}</strong>
-            <br>2ª Dose:<strong>${dataSegundaDose}</strong>
-            <br><img src="cid:print"/>
-            `,
-            attachments: [{
-                content: screenshot.toString('base64'),
-                type: 'image/png',
-                contentId: 'print',
-                filename: 'print.png'
-            }],
-        });
     } else {
         console.log('Nao encontrei datas :(');
     }
